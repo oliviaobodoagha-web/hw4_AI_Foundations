@@ -200,3 +200,17 @@ Each problem has its own section with the problem number and title, the prompts 
 *What was lacking:* The harness had grown problem by problem, so its main sections were out of date (old run instructions on port 8001) and sections 8–10 (specs, limitations, file tree) were still placeholders. It's now reorganized into 8 clear main sections, with the per-problem build notes moved to an appendix (A1–A11).
 
 ---
+
+## Problem 13 — Push to GitHub and Submit the URL
+
+**Prompt 13:**
+> It appears we've come to the end, my friend. Here's what we've got to do: put the code in a folder named hw4 and push it to a public GitHub repository. On Canvas, submit the repo URL (the link graders can open and clone). Do not put my real .env, campus_customs.db, or product images in the GitHub repo. Use .gitignore. Include .env.example with placeholders only. The agent itself should be four files under backend/: prompts/prompt.md, agent.py, tools.py, and models.py. README.md should explain how to run the front end and back end after placing the data pack.
+
+**Follow-up prompts:**
+> It appears I will be the one submitting the link in Canvas, not you.
+
+> You said previously that I had GitHub access. But you're connected to GitHub via a connector.
+
+*What was lacking:* Nothing in the request. Pushing needs my own GitHub sign-in: this Mac's git wasn't signed in to GitHub, and no GitHub connector was available in this session. So the vibe coder prepared and tested the repo, and I did the final sign-in and push myself.
+
+---
