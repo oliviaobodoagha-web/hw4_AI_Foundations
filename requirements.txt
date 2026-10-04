@@ -1,4 +1,4 @@
-# Python 3.12+ (tested on 3.14). Install with: pip install -r requirements.txt
+# Python 3.12+ (tested on 3.14). From the hw4/ folder: pip install -r requirements.txt
 fastapi==0.142.2
 uvicorn[standard]==0.54.0
 pydantic-ai-slim[openai]==2.54.0

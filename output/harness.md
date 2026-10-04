@@ -32,7 +32,7 @@ Browser (React + Vite + TypeScript, http://localhost:5174)
    │  /api/*, /images/*   (Vite proxies to the backend)
    ▼
 FastAPI (backend/main.py, http://localhost:8000)
-   ├─ products, images, accounts (auth.py), chat history ──► SQLite data/campus_customs.db
+   ├─ products, images, accounts, chat history ──► SQLite data/campus_customs.db
    └─ POST /api/chat/stream ──► agent.py: run_chat()
                                    │ PydanticAI agent · model gpt-5.6-luna via Portkey
                                    │ system prompt: prompts/prompt.md (+ live context block)
@@ -64,20 +64,19 @@ Requirements: Python 3.12+, Node 20+, the **data pack** in `hw4/data/`, and `POR
 `hw4/.env` (copy `.env.example`; a `.env` in a parent folder also works). The key is read from the
 environment and never written in code. The full steps are in `README.md`.
 
-**One-time setup**
+**One-time setup** (from the `hw4/` folder)
 ```bash
-cd backend
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cd ../frontend
+cd frontend
 npm install
 ```
 
-**Terminal 1: back end (FastAPI) on port 8000**
+**Terminal 1: back end (FastAPI) on port 8000** (from `hw4/`)
 ```bash
-cd backend
 source .venv/bin/activate
+cd backend
 uvicorn main:app --reload --port 8000
 ```
 On first start it builds the white-backed product photos and print artwork in the
@@ -248,7 +247,7 @@ records what it returned so the fact check can verify the reply.
 | **Streaming replies** | `POST /api/chat/stream` sends NDJSON events: status, draft text, reset, then the fact-checked final answer | A9 |
 | **Safety rules** | Prompt + code checks (card masking, email and promise checks, limits) | §5 |
 | **Audit trail** | Every step appended to `output/audit_trail.json` | A11 |
-| **Clean product photos** | `prepare_images.py` whitens black backdrops in parallel (≈ 6.5× faster); models' print artwork too | A8, A9, A10 |
+| **Clean product photos** | `main.py` (Product photos section) whitens black backdrops in parallel (≈ 6.5× faster); models' print artwork too | A8, A9, A10 |
 | **Storefront** | Carousel + pages of 12, categories, sorting, the model lookbook, motion | A7, A8, A10 |
 
 ---
@@ -381,16 +380,16 @@ hw4/                               (the GitHub repo root)
 ├── README.md                      how to place the data pack and run everything
 ├── .env.example                   placeholder settings; copy to .env
 ├── AI_prompts.md                  log of every prompt typed to the vibe coder
+├── requirements.txt               Python dependencies (pinned)
 ├── .gitignore                     keeps data/, .env, node_modules, .venv out of git
 ├── backend/
-│   ├── main.py                    FastAPI app (run with uvicorn): products, images, auth, chat, history
+│   ├── main.py                    FastAPI app (run with uvicorn): products, images, chat, history;
+│   │                              Accounts section (hashing, sign-up/log-in, signed cookies) and
+│   │                              Product photos section (white-backed photos + prints, in parallel)
 │   ├── agent.py                   agent wiring: model, prompt, tools, validators, limits, streaming, audit
-│   ├── tools.py                   agent tools, guards, search, fact check, safety checks, DB helpers
 │   ├── models.py                  every Pydantic model (section 3)
-│   ├── prompts/prompt.md          system prompt, including all safety rules (A–F)
-│   ├── auth.py                    accounts: hashing, sign-up/log-in, signed session cookies
-│   ├── prepare_images.py          white-backed photos + print artwork, in parallel
-│   └── requirements.txt
+│   ├── tools.py                   agent tools, guards, search, fact check, safety checks, DB helpers
+│   └── prompts/prompt.md          system prompt, including all safety rules (A–F)
 ├── frontend/
 │   ├── index.html                 fonts (Cormorant Garamond, Jost)
 │   ├── vite.config.ts             port 5174, proxy to the back end
@@ -549,7 +548,7 @@ Accounts are in section A3, and the agent behind `/api/chat` is in section A4.
 
 
 Shoppers can create an account, log in, stay logged in across page reloads, and log
-out. All of the code is in `backend/auth.py` (backend) and `frontend/src/auth.tsx`
+out. All of the code is in the Accounts section of `backend/main.py` (backend) and `frontend/src/auth.tsx`
 (frontend).
 
 ### What we store for a user
@@ -1197,7 +1196,7 @@ image file** (RGB 0,0,0), and some light photos have black bars down the sides. 
 hoodies and dark tees almost disappeared against it. CSS can't change pixels inside a
 photo, so the images themselves had to be fixed.
 
-**Fix:** `backend/prepare_images.py` makes a white-backed display copy of every photo in
+**Fix:** the Product photos section of `backend/main.py` makes a white-backed display copy of every photo in
 `data/products_display/`. **The provided originals in `data/products/` are never changed.**
 
 1. Flood-fill from points all around the image border, only through near-black pixels
@@ -1211,7 +1210,7 @@ photo, so the images themselves had to be fixed.
 
 - **Serving:** `main.py` serves `/images/` from the display copies. On startup it
   creates any that are missing, and falls back to the originals if that fails.
-- **Cache-busting:** image URLs carry `?v=2` (`prepare_images.VERSION`), so browsers fetch
+- **Cache-busting:** image URLs carry `?v=2` (`IMAGE_VERSION` in `models.py`), so browsers fetch
   the new white-backed copies instead of cached black ones.
 - **Card and detail image areas** now have white backgrounds to match.
 
@@ -1291,7 +1290,7 @@ the correct $68.00.
 
 ### Improvement 3: product images processed in parallel
 
-`prepare_images.py` (Problem 9, front end) whitened 102 photos one at a time. Each photo is
+The photo preparation (Problem 9, front end) whitened 102 photos one at a time. Each photo is
 independent, CPU-heavy pixel work, which is a perfect fit for parallel processing:
 
 - `prepare_all()` hands each photo to `process_one()` in a **`ProcessPoolExecutor`** with
@@ -1327,7 +1326,7 @@ it helps customers stay and buy. Implementation notes:
 | Lifestyle photos (Unsplash, hotlinked, credited) | `frontend/src/lifestyle.ts`, `components/PhotoCredit.tsx` |
 | Color swatches | `frontend/src/swatches.ts` (catalogue color name → swatch color) |
 | Models wearing our pieces | `MODEL_LOOKS` in `lifestyle.ts` + `components/ModelLookCard.tsx`: an Unsplash model photo (fixed 900×1125 crop) with the product's print laid on top by % position, rotation and blend mode |
-| Print artwork | `prepare_images.prepare_prints()` cuts each print out of its product photo as a transparent PNG (`data/products_display/prints/`, git-ignored), served at `GET /images/prints/<id>.png` |
+| Print artwork | `prepare_prints()` in `main.py` cuts each print out of its product photo as a transparent PNG (`data/products_display/prints/`, git-ignored), served at `GET /images/prints/<id>.png` |
 | Heritage header (centered wordmark) / footer | `components/NavBar.tsx`, `components/Footer.tsx` |
 | Hero, lookbook, categories, seasons | `pages/Home.tsx` |
 | Category tabs + sort | `pages/Products.tsx` |

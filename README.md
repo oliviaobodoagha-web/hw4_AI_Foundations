@@ -42,13 +42,13 @@ through the Portkey gateway). The key is only read from `.env`; it never appears
 
 ## 3. Run the back end (FastAPI, port 8000)
 
-Requires **Python 3.12+**. In a terminal:
+Requires **Python 3.12+**. In a terminal, from the `hw4/` folder:
 
 ```bash
-cd backend
 python3 -m venv .venv
 source .venv/bin/activate           # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+cd backend
 uvicorn main:app --reload --port 8000
 ```
 
@@ -92,16 +92,14 @@ back end on port 8000.
 
 ```
 hw4/
-├── README.md, .env.example, .gitignore, AI_prompts.md
+├── AI_prompts.md, requirements.txt, .env.example, .gitignore, README.md
 ├── backend/
-│   ├── main.py              FastAPI app (run with uvicorn): products, images, accounts, chat
-│   ├── prompts/prompt.md    ┐
-│   ├── agent.py             │ the agent: four files
-│   ├── tools.py             │ (system prompt, wiring + limits, tools + checks, Pydantic models)
-│   ├── models.py            ┘
-│   ├── auth.py              accounts: PBKDF2 password hashing, signed session cookies
-│   ├── prepare_images.py    white-backed product photos + print artwork (parallel)
-│   └── requirements.txt
+│   ├── main.py              FastAPI app — run with: uvicorn main:app --reload --port 8000
+│   │                        (products, images, accounts, chat; also prepares product photos)
+│   ├── agent.py             ┐
+│   ├── models.py            │ the agent: four files
+│   ├── tools.py             │ (wiring + limits, Pydantic models, tools + checks, system prompt)
+│   └── prompts/prompt.md    ┘
 ├── frontend/                React + Vite + TypeScript storefront
 │   └── src/ (pages/, components/, api.ts, types.ts, index.css …)
 └── output/

@@ -5,7 +5,7 @@ Each problem has its own section with the problem number and title, the prompts 
 
 ---
 
-## Setup — Creating the Prompt Log
+## Problem 1 — Setup: Creating the Prompt Log
 
 **Prompt 1:**
 > Great now create AI_prompts.md at the start of this assignment and keep it updated as I work. This file is the log of what I typed to your vibe coder. I will describe each problem to you the vibe coder in my own words. Put one section for each problem. Each section must include the following: 1. the problem number and title 2. At least one prompt that I typed, in my own words as much as possible 3. One follow up prompt if I needed it and a sentence on what was lacking if relevant. This is the first prompt — label AI_prompts.md accordingly.
@@ -92,7 +92,7 @@ Each problem has its own section with the problem number and title, the prompts 
 
 ---
 
-## Problem 9 — Improvements (Front End)
+## Problem 9 — Improvements (Front End and Back End)
 
 **Prompt 9 (front-end improvements):**
 > Front end:
@@ -214,3 +214,10 @@ Each problem has its own section with the problem number and title, the prompts 
 *What was lacking:* Nothing in the request. Pushing needs my own GitHub sign-in: this Mac's git wasn't signed in to GitHub, and no GitHub connector was available in this session. So the vibe coder prepared and tested the repo, and I did the final sign-in and push myself.
 
 ---
+
+**Follow-up prompts:**
+> I worry we may be missing parts.
+
+> This is the expected file layout. *(a screenshot of the expected hw4/ tree: requirements.txt at the top level; backend/ with only main.py, agent.py, models.py, tools.py and prompts/prompt.md)*
+
+*What was lacking:* The first push had requirements.txt inside backend/ and two extra backend files (auth.py and prepare_images.py). These were folded into main.py and requirements.txt moved to the top level, so the repo now matches the expected layout exactly. The first log section was also relabeled "Problem 1".

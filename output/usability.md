@@ -10,7 +10,7 @@ or the business.
 | F1 | Product carousel + 12-per-page grid with page numbers | Front end | Home page and Products page |
 | F2 | Dark products never shown on a black background | Front end | Every product image |
 | B1 | Streaming chat replies with live progress | Back end | The 💬 chat (bottom right) |
-| B2 | Product images processed in parallel | Back end | `backend/prepare_images.py`, server startup |
+| B2 | Product images processed in parallel | Back end | `backend/main.py` (Product photos section), server startup |
 
 ---
 
@@ -47,7 +47,7 @@ or the business.
 - 73 of the 102 provided product photos have a **pure-black background built into the
   image file**, and some light photos have black bars down the sides. Navy hoodies and
   dark tees almost disappeared against it.
-- `backend/prepare_images.py` makes a **white-backed copy** of every photo. It fills in
+- The **Product photos** section of `backend/main.py` makes a **white-backed copy** of every photo. It fills in
   only the black area connected to the photo's edges, so the garment and any black
   lettering or logos on it stay as they are. The site serves these copies everywhere
   (grid, carousel, chat cards, product pages).
@@ -107,7 +107,7 @@ or the business.
 ### B2. Product images processed in parallel
 
 **1. What I added**
-- `backend/prepare_images.py` (which makes the white-backed photos from F2) now processes
+- The photo preparation in `backend/main.py` (which makes the white-backed photos from F2) now processes
   photos **in parallel, one worker per CPU core** (Python `ProcessPoolExecutor`), instead
   of one photo after another.
 - Measured on a 12-core Mac, all 102 photos (two separate runs):
