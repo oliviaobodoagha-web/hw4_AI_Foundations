@@ -1,0 +1,22 @@
+# ---- Secrets: never commit real keys ----
+.env
+.env.*
+!.env.example
+
+# ---- Provided data pack: never commit the database or product images ----
+data/
+*.db
+*.sqlite
+
+# ---- Generated / local-only ----
+backend/.venv/
+.venv/
+__pycache__/
+*.pyc
+frontend/node_modules/
+node_modules/
+frontend/dist/
+dist/
+output/*.tmp
+.DS_Store
+.claude/

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App Check: Campus Customs</title>
+<style>
+  :root { --navy: #0b2341; --ivory: #f8f5ee; --ink: #1b1f26; --muted: #5f5e5a; --line: #e2dccf; --pass: #2e6b4f; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ivory); color: var(--ink); font: 16px/1.6 -apple-system, "Helvetica Neue", Arial, sans-serif; }
+  header { background: var(--navy); color: var(--ivory); padding: 26px 24px; }
+  header div, main { max-width: 1040px; margin: 0 auto; }
+  h1, h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 600; }
+  h1 { margin: 0 0 6px; font-size: 1.9rem; }
+  header p { margin: 0; color: #dfe5ee; }
+  main { padding: 8px 24px 56px; }
+  nav { background: #fff; border: 1px solid var(--line); padding: 14px 20px; margin: 22px 0; }
+  nav ol { margin: 6px 0 0; padding-left: 22px; }
+  section { background: #fff; border: 1px solid var(--line); padding: 22px 24px; margin: 22px 0; }
+  h2 { color: var(--navy); font-size: 1.4rem; margin: 0 0 12px; }
+  .pass { display: inline-block; background: #e6f2ec; color: var(--pass); font: 700 .75rem/1 -apple-system, Arial, sans-serif;
+          letter-spacing: .08em; padding: 5px 9px; margin-left: 8px; vertical-align: middle; }
+  img { width: 100%; display: block; border: 1px solid var(--line); }
+  p { margin: 12px 0 0; }
+  .proves { background: var(--ivory); border-left: 3px solid var(--navy); padding: 10px 14px; }
+  .label { font-weight: 700; color: var(--navy); }
+  footer { color: var(--muted); font-size: .85rem; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>App Check: Bulldog Blue by Campus Customs</h1>
+    <p>Problem 11 site test. Live site tested in Chrome on October 4, 2026, as a guest shopper. Stock and prices were checked against <code>campus_customs.db</code>.</p>
+  </div>
+</header>
+
+<main>
+  <nav>
+    <strong>Checks</strong>
+    <ol>
+      <li><a href="#check-1">Chat checks an item's inventory level (honest stock and price from the database)</a> <span class="pass">PASS</span></li>
+      <li><a href="#check-2">Category question shows matching product cards on the page</a> <span class="pass">PASS</span></li>
+      <li><a href="#check-3">Problem 9 usability feature: carousel + 12-per-page grid</a> <span class="pass">PASS</span></li>
+    </ol>
+  </nav>
+
+  <section id="check-1">
+    <h2>Check 1: Chat checks an item's inventory level <span class="pass">PASS</span></h2>
+    <img src="app_check_images/inventory.png" alt="Product page stock table beside the chat's answer about XL, M and price">
+    <p>On the Champion Reverse Weave Hoodie 1 page, I asked: <em>"Is this hoodie available in XL? How many are left in M, and what's the price?"</em>
+       The chat replied: <em>"Sorry, this hoodie is sold out in XL. There are 20 left in M, and the price is $68.00."</em></p>
+    <p class="proves"><span class="label">What this proves:</span> the chat answers stock and price from the database, not from guesses.
+       Every fact matches <code>campus_customs.db</code> (XL = 0, M = 20, price = 68.0), and the page's own stock table next to it also shows XL as sold out.</p>
+  </section>
+
+  <section id="check-2">
+    <h2>Check 2: Category question shows product cards <span class="pass">PASS</span></h2>
+    <img src="app_check_images/category_cards.png" alt="Hoodies product cards on the page next to the chat's answer">
+    <p>I asked <em>"What hoodies do you have?"</em> A "Hoodies" panel with 12 product cards (image, name, price, colors and sizes) appeared on the page,
+       with "Showing 12 of 25 matches" and a "See all 25" button.</p>
+    <p class="proves"><span class="label">What this proves:</span> the agent's search results reach the website as real product cards (the chat-to-page contract).
+       The counts and prices match the database: 25 hoodies, and the 12 shown are $68.00 except the Brooks Brothers at $88.00.</p>
+    <img src="app_check_images/category_see_all.png" alt="Products page filtered to 25 hoodies" style="margin-top:18px">
+    <p>Clicking "See all 25" opens the Products page filtered to the same search: "Showing 1–12 of 25".</p>
+    <p class="proves"><span class="label">What this proves:</span> the "See all" link repeats the agent's exact search, so the chat and the shop always agree on what matches.</p>
+  </section>
+
+  <section id="check-3">
+    <h2>Check 3: Problem 9 feature: carousel + 12-per-page grid <span class="pass">PASS</span></h2>
+    <img src="app_check_images/carousel.png" alt="Featured picks carousel at the top of the Shop page">
+    <p>The Shop page opens with a "Featured picks" carousel showing 3 products at a time, with arrows and dots to move through the rest.</p>
+    <p class="proves"><span class="label">What this proves:</span> shoppers see products immediately, without scrolling (usability improvement F1).</p>
+    <img src="app_check_images/pagination.png" alt="Page 2 of the product grid with page numbers" style="margin-top:18px">
+    <p>Below the carousel, all 102 products are shown 12 at a time. This is page 2: "Showing 13–24 of 102", 3 rows of 4 cards, and page numbers 1–9 with 2 highlighted.</p>
+    <p class="proves"><span class="label">What this proves:</span> the catalogue is broken into easy-to-scan pages that you click through (1, 2, 3…), and the page number is kept in the URL (<code>?page=2</code>).</p>
+  </section>
+
+  <footer>Screenshots are in <code>app_check_images/</code> next to this file. Keep the two together when moving or submitting.</footer>
+</main>
+</body>
+</html>
